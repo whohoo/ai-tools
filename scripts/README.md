@@ -10,9 +10,21 @@
 curl -fsSL https://cdn.jsdelivr.net/gh/whohoo/ai-tools@main/scripts/update-opencode-volcengine.js | node
 ```
 
-按提示选择安装目标：
+默认安装到 `~/.config/opencode/opencode.jsonc`（全局配置）。如需安装到当前目录，可传参数 `2`：
 
-1. `~/.config/opencode/opencode.jsonc` — 全局配置
+```bash
+curl -fsSL https://cdn.jsdelivr.net/gh/whohoo/ai-tools@main/scripts/update-opencode-volcengine.js | node - 2
+```
+
+也可以直接下载后通过交互方式选择：
+
+```bash
+node update-opencode-volcengine.js
+```
+
+安装目标位置：
+
+1. `~/.config/opencode/opencode.jsonc` — 全局配置（默认）
 2. `./.opencode/opencode.jsonc` — 当前目录配置
 
 ## 作用
