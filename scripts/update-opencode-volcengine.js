@@ -5,11 +5,6 @@ const os = require("os");
 const readline = require("readline");
 const https = require("https");
 
-const sourceConfigPath = path.resolve(
-  __dirname,
-  "../config/opencode-volcengine.jsonc",
-);
-
 const GITHUB_REPO = "whohoo/ai-tools";
 const GITHUB_BRANCH = "main";
 const GITHUB_RAW_URL = `https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}/config/opencode-volcengine.jsonc`;
@@ -46,7 +41,7 @@ function fetchRemoteConfig() {
       .on("error", (err) => {
         reject(
           new Error(
-            `无法连接 GitHub: ${err.message}。请检查网络连接或使用本地配置文件。`,
+            `无法连接 GitHub: ${err.message}。请检查网络连接。`,
           ),
         );
       });
@@ -197,13 +192,8 @@ async function run() {
     console.log("正在从 GitHub 获取最新配置...");
     sourceRaw = await fetchRemoteConfig();
   } catch (error) {
-    console.error(`从 GitHub 获取配置失败: ${error.message}`);
-    console.error("尝试使用本地配置文件...");
-    if (!fs.existsSync(sourceConfigPath)) {
-      console.error(`本地配置文件也不存在: ${sourceConfigPath}`);
-      process.exit(1);
-    }
-    sourceRaw = fs.readFileSync(sourceConfigPath, "utf8");
+    console.error(`获取配置失败: ${error.message}`);
+    process.exit(1);
   }
 
   const sourceConfig = parseJsonc(sourceRaw, "源配置");
@@ -236,7 +226,7 @@ async function run() {
 
   if (!existingPath) {
     fs.mkdirSync(targetDir, { recursive: true });
-    fs.copyFileSync(sourceConfigPath, targetJsoncPath);
+    fs.writeFileSync(targetJsoncPath, sourceRaw, "utf8");
     console.log(`已复制源配置到 ${targetJsoncPath}`);
     return;
   }

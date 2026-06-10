@@ -206,6 +206,17 @@
           "output": ["text"]
         }
       },
+      "doubao-1-5-pro-32k-character-250715": {
+        "name": "doubao-1.5-pro-32k-character",
+        "limit": {
+          "context": 32000,
+          "output": 16000
+        },
+        "modalities": {
+          "input": ["text"],
+          "output": ["text"]
+        }
+      },
       "doubao-1-5-lite-32k-250115": {
         "name": "doubao-1.5-lite",
         "limit": {
@@ -273,6 +284,17 @@
         }
       },
       "deepseek-v3-1-terminus": {
+        "name": "deepseek-v3.1-terminus",
+        "limit": {
+          "context": 256000,
+          "output": 4096
+        },
+        "modalities": {
+          "input": ["text"],
+          "output": ["text"]
+        }
+      },
+      "deepseek-v3-1-250821": {
         "name": "deepseek-v3.1",
         "limit": {
           "context": 256000,
