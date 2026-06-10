@@ -7,7 +7,7 @@ const https = require("https");
 
 const GITHUB_REPO = "whohoo/ai-tools";
 const GITHUB_BRANCH = "main";
-const GITHUB_RAW_URL = `https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}/config/opencode-volcengine.jsonc`;
+const GITHUB_RAW_URL = `https://cdn.jsdelivr.net/gh/${GITHUB_REPO}@${GITHUB_BRANCH}/config/opencode-volcengine.jsonc`;
 
 function expandHome(filePath) {
   if (!filePath) return filePath;

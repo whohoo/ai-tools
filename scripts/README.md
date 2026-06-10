@@ -7,7 +7,7 @@
 ## 用法
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/whohoo/ai-tools/main/scripts/update-opencode-volcengine.js | node
+curl -fsSL https://cdn.jsdelivr.net/gh/whohoo/ai-tools@main/scripts/update-opencode-volcengine.js | node
 ```
 
 按提示选择安装目标：
