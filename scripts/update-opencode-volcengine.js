@@ -114,6 +114,10 @@ function safeStringify(value) {
   return JSON.stringify(value, null, 2) + "\n";
 }
 
+function getModelNames(models) {
+  return Object.values(models || {}).map((m) => m.name);
+}
+
 function mergeModels(sourceModels, targetModels) {
   const result = Object.assign({}, targetModels || {});
   for (const key of Object.keys(sourceModels || {})) {
@@ -227,7 +231,9 @@ async function run() {
   if (!existingPath) {
     fs.mkdirSync(targetDir, { recursive: true });
     fs.writeFileSync(targetJsoncPath, sourceRaw, "utf8");
+    const names = getModelNames(sourceConfig.provider?.["volcengine-api"]?.models);
     console.log(`已复制源配置到 ${targetJsoncPath}`);
+    console.log(`新增模型: ${names.join(", ")}`);
     return;
   }
 
@@ -238,9 +244,9 @@ async function run() {
     process.exit(1);
   }
 
-  const sourceVolc = sourceConfig["volcengine-api"];
+  const sourceVolc = sourceConfig.provider?.["volcengine-api"];
   if (!sourceVolc || typeof sourceVolc !== "object") {
-    console.error("源配置文件内缺少 volcengine-api 属性。");
+    console.error("源配置文件内缺少 provider.volcengine-api 属性。");
     process.exit(1);
   }
 
@@ -249,9 +255,11 @@ async function run() {
       "volcengine-api": sourceVolc,
     });
     fs.writeFileSync(existingPath, safeStringify(updated), "utf8");
+    const names = getModelNames(sourceVolc.models);
     console.log(
       `目标配置中不存在 volcengine-api，已将该属性写入 ${existingPath}`,
     );
+    console.log(`新增模型: ${names.join(", ")}`);
     return;
   }
 
@@ -265,9 +273,16 @@ async function run() {
     "volcengine-api": updatedVolc,
   });
   fs.writeFileSync(existingPath, safeStringify(updatedConfig), "utf8");
+  const newModelKeys = Object.keys(sourceModels).filter(
+    (key) => !targetModels[key],
+  );
+  const newNames = newModelKeys.map((k) => sourceModels[k].name);
   console.log(
     `目标配置中的 volcengine-api.models 已合并更新到 ${existingPath}`,
   );
+  if (newNames.length > 0) {
+    console.log(`新增模型: ${newNames.join(", ")}`);
+  }
 }
 
 run().catch((error) => {
